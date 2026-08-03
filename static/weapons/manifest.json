@@ -1,0 +1,165 @@
+{
+  "weapons": [
+    {
+      "id": "Axe_Double",
+      "name": "Axe Double",
+      "file": "weapons/Axe_Double.glb",
+      "thumbnail": "weapons/Axe_Double.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Axe_Double_Golden",
+      "name": "Axe Double Golden",
+      "file": "weapons/Axe_Double_Golden.glb",
+      "thumbnail": "weapons/Axe_Double_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Axe_small",
+      "name": "Axe small",
+      "file": "weapons/Axe_small.glb",
+      "thumbnail": "weapons/Axe_small.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Axe_small_Golden",
+      "name": "Axe small Golden",
+      "file": "weapons/Axe_small_Golden.glb",
+      "thumbnail": "weapons/Axe_small_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Battleaxe2",
+      "name": "Battleaxe2",
+      "file": "weapons/Battleaxe2_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Bow_Golden",
+      "name": "Bow Golden",
+      "file": "weapons/Bow_Golden.glb",
+      "thumbnail": "weapons/Bow_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Bow_Wooden",
+      "name": "Bow Wooden",
+      "file": "weapons/Bow_Wooden.glb",
+      "thumbnail": "weapons/Bow_Wooden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Dagger",
+      "name": "Dagger",
+      "file": "weapons/Dagger.glb",
+      "thumbnail": "weapons/Dagger.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Dagger_Golden",
+      "name": "Dagger Golden",
+      "file": "weapons/Dagger_Golden.glb",
+      "thumbnail": "weapons/Dagger_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Dagger2",
+      "name": "Dagger2",
+      "file": "weapons/Dagger2_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Glaive",
+      "name": "Glaive",
+      "file": "weapons/Glaive_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Greataxe",
+      "name": "Greataxe",
+      "file": "weapons/Greataxe_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Greatsword",
+      "name": "Greatsword",
+      "file": "weapons/Greatsword_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Hammer_Double",
+      "name": "Hammer Double",
+      "file": "weapons/Hammer_Double.glb",
+      "thumbnail": "weapons/Hammer_Double.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Hammer_Double_Golden",
+      "name": "Hammer Double Golden",
+      "file": "weapons/Hammer_Double_Golden.glb",
+      "thumbnail": "weapons/Hammer_Double_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Quarterstaff",
+      "name": "Quarterstaff",
+      "file": "weapons/Quarterstaff.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Scimitar2",
+      "name": "Scimitar2",
+      "file": "weapons/Scimitar2_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Shield_Spell",
+      "name": "Shield Spell",
+      "file": "weapons/Shield_Spell_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Spear",
+      "name": "Spear",
+      "file": "weapons/Spear_SR.glb",
+      "thumbnail": "",
+      "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Sword",
+      "name": "Sword",
+      "file": "weapons/Sword.glb",
+      "thumbnail": "weapons/Sword.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Sword_big",
+      "name": "Sword big",
+      "file": "weapons/Sword_big.glb",
+      "thumbnail": "weapons/Sword_big.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Sword_big_Golden",
+      "name": "Sword big Golden",
+      "file": "weapons/Sword_big_Golden.glb",
+      "thumbnail": "weapons/Sword_big_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Sword_Golden",
+      "name": "Sword Golden",
+      "file": "weapons/Sword_Golden.glb",
+      "thumbnail": "weapons/Sword_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    }
+  ]
+}
