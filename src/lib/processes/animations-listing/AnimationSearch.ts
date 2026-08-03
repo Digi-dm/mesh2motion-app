@@ -16,6 +16,20 @@ export class AnimationSearch extends EventTarget {
   private custom_event: CustomEvent | null = null
   private show_selected_only: boolean = false
 
+  // Optional hooks wired by StepAnimationsListing for the weapon system.
+  public weapon_visibility_provider: ((index: number) => boolean) | null = null
+  public weapon_toggle_callback: ((index: number) => void) | null = null
+  public weapon_active_provider: (() => boolean) | null = null
+  public duplicate_callback: ((index: number) => void) | null = null
+
+  // Order in which animations were checked for export. Drives the automatic
+  // numeric prefix ("0. ", "1. ", ...) so exports keep a deliberate order.
+  private selection_order: number[] = []
+
+  // Custom export names keyed by original animation index.
+  // These override the clip name at export time and control export order.
+  private readonly custom_export_names = new Map<number, string>()
+
   constructor (filter_input_id: string, animation_list_container_id: string, theme_manager: ThemeManager, skeleton_type: SkeletonType) {
     super()
     this.filter_input = document.querySelector(`#${filter_input_id}`)
@@ -26,6 +40,8 @@ export class AnimationSearch extends EventTarget {
   }
 
   public initialize_animations (animations: TransformedAnimationClipPair[]): void {
+    this.selection_order = []
+    this.custom_export_names.clear()
     // Convert to animations with state tracking
     this.all_animations = this.map_animations_to_state(animations)
 
@@ -58,7 +74,152 @@ export class AnimationSearch extends EventTarget {
   private setup_event_listeners (): void {
     this.setup_filter_listener()
     this.setup_checkbox_listeners()
+    this.setup_rename_listener()
+    this.setup_weapon_toggle_listener()
+    this.setup_duplicate_listener()
     this.setup_theme_change_listener()
+  }
+
+  /**
+   * Event delegation for the per-animation rename control.
+   * Custom names override the clip name on export and determine export order.
+   */
+  private setup_rename_listener (): void {
+    if (this.animation_list_container === null) {
+      return
+    }
+
+    this.animation_list_container.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement
+      if (!target.classList.contains('anim-rename-btn')) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation() // don't trigger animation playback
+
+      const index = Number(target.getAttribute('data-rename-index'))
+      if (isNaN(index) || index < 0 || index >= this.all_animations.length) {
+        return
+      }
+
+      const current_name = this.get_export_name(index)
+      const new_name = window.prompt('Export name for this animation (prefix with numbers to control order, e.g. 01_Idle):', current_name)
+
+      if (new_name === null) {
+        return // user cancelled
+      }
+
+      const trimmed = new_name.trim()
+      if (trimmed === '' || trimmed === this.all_animations[index].name) {
+        this.custom_export_names.delete(index) // empty or unchanged resets to default
+      } else {
+        this.custom_export_names.set(index, trimmed)
+      }
+
+      const filter_text = this.filter_input?.value.toLowerCase() ?? ''
+      this.render_filtered_animations(filter_text)
+    })
+  }
+
+  private setup_weapon_toggle_listener (): void {
+    if (this.animation_list_container === null) {
+      return
+    }
+
+    this.animation_list_container.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement
+      if (!target.classList.contains('anim-weapon-btn')) {
+        return
+      }
+
+      event.preventDefault()
+      event.stopPropagation()
+
+      const index = Number(target.getAttribute('data-weapon-index'))
+      if (isNaN(index)) {
+        return
+      }
+
+      this.weapon_toggle_callback?.(index)
+      const filter_text = this.filter_input?.value.toLowerCase() ?? ''
+      this.render_filtered_animations(filter_text)
+    })
+  }
+
+  private setup_duplicate_listener (): void {
+    if (this.animation_list_container === null) {
+      return
+    }
+
+    this.animation_list_container.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement
+      if (!target.classList.contains('anim-duplicate-btn')) {
+        return
+      }
+      event.preventDefault()
+      event.stopPropagation()
+
+      const index = Number(target.getAttribute('data-duplicate-index'))
+      if (!isNaN(index)) {
+        this.duplicate_callback?.(index)
+      }
+    })
+  }
+
+  private strip_order_prefix (name: string): string {
+    return name.replace(/^\d+\.\s*/, '')
+  }
+
+  private update_selection_order (index: number, checked: boolean): void {
+    const existing_position = this.selection_order.indexOf(index)
+    if (checked && existing_position === -1) {
+      this.selection_order.push(index)
+    }
+    if (!checked && existing_position !== -1) {
+      this.selection_order.splice(existing_position, 1)
+    }
+    this.apply_order_prefixes()
+  }
+
+  /**
+   * Re-number all selected animations by selection order. Manual renames are
+   * preserved; only the leading "N. " prefix is managed automatically.
+   */
+  private apply_order_prefixes (): void {
+    // strip existing prefixes (keep any manual rename underneath)
+    this.all_animations.forEach((animation, index) => {
+      const current = this.custom_export_names.get(index)
+      if (current !== undefined) {
+        const stripped = this.strip_order_prefix(current)
+        if (stripped === this.animation_name_clean(animation.name) || stripped === animation.name) {
+          this.custom_export_names.delete(index)
+        } else {
+          this.custom_export_names.set(index, stripped)
+        }
+      }
+    })
+
+    // apply fresh prefixes in selection order
+    this.selection_order.forEach((animation_index, position) => {
+      const base = this.custom_export_names.get(animation_index) ??
+        this.animation_name_clean(this.all_animations[animation_index]?.name ?? '')
+      this.custom_export_names.set(animation_index, `${position}. ${base}`)
+    })
+
+    const filter_text = this.filter_input?.value.toLowerCase() ?? ''
+    this.render_filtered_animations(filter_text)
+  }
+
+  /**
+   * The name this animation will have in the exported file.
+   */
+  public get_export_name (index: number): string {
+    return this.custom_export_names.get(index) ?? this.all_animations[index]?.name ?? ''
+  }
+
+  public has_custom_export_name (index: number): boolean {
+    return this.custom_export_names.has(index)
   }
 
   private setup_theme_change_listener (): void {
@@ -94,6 +255,11 @@ export class AnimationSearch extends EventTarget {
       const target = event.target as HTMLInputElement
       if (target?.type === 'checkbox') {
         this.save_current_checkbox_states()
+
+        const changed_index = parseInt(target.value)
+        if (!isNaN(changed_index)) {
+          this.update_selection_order(changed_index, target.checked)
+        }
 
         // If in "selected only" mode, re-render to remove unchecked animations immediately
         if (this.show_selected_only) {
@@ -142,11 +308,10 @@ export class AnimationSearch extends EventTarget {
 
     // Filter animations based on search text and selected-only mode
     this.filtered_animations_list = this.all_animations.filter(animation => {
-
-      // some animation names have underscores (even though that isn't shown on UI), others have spaces. 
-      // we need to support both for searching to get a consistent match
-      const matches_search = animation.name.toLowerCase().replace(/_/g, ' ').includes(filter_text.toLowerCase().trim())
-
+      const original_index = this.all_animations.indexOf(animation)
+      const export_name = this.get_export_name(original_index)
+      const matches_search = animation.name.toLowerCase().includes(filter_text) ||
+        export_name.toLowerCase().includes(filter_text)
       if (this.show_selected_only) {
         return matches_search && animation.isChecked === true
       }
@@ -193,14 +358,30 @@ export class AnimationSearch extends EventTarget {
         ? '<span class="anim-custom-badge" title="Custom animation" aria-label="Custom animation">C</span>'
         : ''
 
+      const has_rename = this.custom_export_names.has(original_index)
+      const display_label = has_rename
+        ? this.custom_export_names.get(original_index) ?? ''
+        : this.animation_name_clean(animation_clip.name)
+      const renamed_style = has_rename ? ' style="font-style: italic;"' : ''
+      const weapon_is_active = this.weapon_active_provider?.() ?? false
+      const weapon_visible = this.weapon_visibility_provider?.(original_index) ?? true
+      const weapon_button_html = weapon_is_active
+        ? `<span class="anim-weapon-btn" title="${weapon_visible ? 'Weapon shown in this animation (click to hide)' : 'Weapon hidden in this animation (click to show)'}" aria-label="Toggle weapon visibility" data-weapon-index="${original_index}" style="position:absolute; top:2px; left:2px; cursor:pointer; padding:2px 5px; opacity:${weapon_visible ? '0.9' : '0.25'}; z-index: 2;">&#9876;</span>`
+        : ''
+      const duplicate_button_html = `<span class="anim-duplicate-btn" title="Duplicate animation (for weapon variants)" aria-label="Duplicate animation" data-duplicate-index="${original_index}" style="position:absolute; bottom:2px; right:2px; cursor:pointer; padding:2px 5px; opacity:0.6; z-index: 2;">&#10697;</span>`
+      const rename_button_html = `<span class="anim-rename-btn" title="Rename for export" aria-label="Rename for export" data-rename-index="${original_index}" style="position:absolute; top:2px; right:2px; cursor:pointer; padding:2px 5px; opacity:0.7; z-index: 2;">&#9998;</span>`
+
       const animation_entry_html = `
         <div class="${is_custom_animation ? 'anim-custom-item' : 'anim-item'}">
           <button class="secondary-button play" data-index="${original_index}" style="display: flex; flex-direction:column; position: relative;">
             ${custom_animation_badge_html}
             <div class="anim-preview-placeholder"${preview_data_src_attribute} style="pointer-events: none;"></div>
+            ${weapon_button_html}
+            ${rename_button_html}
+            ${duplicate_button_html}
             <label class="styled-checkbox">
               <input type="checkbox" name="${animation_clip.name}" value="${original_index}" ${checked_attribute}>
-              <span class="anim-preview-label">${this.animation_name_clean(animation_clip.name)}</span>
+              <span class="anim-preview-label"${renamed_style}>${display_label}</span>
             </label>
           </button>
         </div>`
@@ -297,6 +478,18 @@ export class AnimationSearch extends EventTarget {
     this.all_animations.forEach(animation => {
       animation.isChecked = new_state
     })
+
+    if (new_state) {
+      // number any not-yet-ordered animations in listing order
+      this.all_animations.forEach((_animation, index) => {
+        if (!this.selection_order.includes(index)) {
+          this.selection_order.push(index)
+        }
+      })
+    } else {
+      this.selection_order = []
+    }
+    this.apply_order_prefixes()
 
     // Update all checkboxes in the UI
     this.update_all_checkboxes_in_ui(new_state)

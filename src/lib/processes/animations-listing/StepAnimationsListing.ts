@@ -14,6 +14,7 @@ import { SkeletonType } from '../../enums/SkeletonType.ts'
 import { Utility } from '../../Utilities.ts'
 import { type ThemeManager } from '../../ThemeManager.ts'
 import { AnimationSearch } from './AnimationSearch.ts'
+import { WeaponAttachment, type WeaponExportEntry } from './WeaponAttachment.ts'
 import { type AnimationClipMetadata, type TransformedAnimationClipPair } from './interfaces/TransformedAnimationClipPair.ts'
 
 // Note: EventTarget is a built-ininterface and do not need to import it
@@ -46,6 +47,9 @@ export class StepAnimationsListing extends EventTarget {
 
   // Animation search functionality
   public animation_search: AnimationSearch | null = null
+
+  // Weapon attachment system (fork feature)
+  public readonly weapon_attachment: WeaponAttachment = new WeaponAttachment()
 
   public set_animations_file_path (path: string): void {
     this.animations_file_path = path
@@ -105,6 +109,7 @@ export class StepAnimationsListing extends EventTarget {
     }
 
     this.reset_step_data()
+    this.weapon_attachment.init()
     this.custom_animation_importer.set_enabled(!this.is_loading_default_animations)
 
     this.skeleton_type = skeleton_type
@@ -216,6 +221,7 @@ export class StepAnimationsListing extends EventTarget {
     }
 
     this.skinned_meshes_to_animate = new_skinned_meshes
+    this.weapon_attachment.set_skinned_meshes(new_skinned_meshes)
 
     // replay current animation on the new meshes
     this.play_animation(this.current_playing_index)
@@ -240,6 +246,7 @@ export class StepAnimationsListing extends EventTarget {
 
   public load_and_apply_default_animation_to_skinned_mesh (final_skinned_meshes: SkinnedMesh[]): void {
     this.skinned_meshes_to_animate = final_skinned_meshes
+    this.weapon_attachment.set_skinned_meshes(final_skinned_meshes)
 
     // Set the animations file path on the loader
     this.animation_loader.set_animations_file_path(this.animations_file_path)
@@ -391,6 +398,9 @@ export class StepAnimationsListing extends EventTarget {
       all_animation_actions.push(anim_action)
     })
 
+    // live preview of per-animation weapon visibility
+    this.weapon_attachment.update_preview_visibility(index)
+
     // Update the animation player with the current animation and all actions
     if (all_animation_actions.length > 0) {
       const clip_to_play: AnimationClip = this.animation_clips_loaded[this.current_playing_index].display_animation_clip
@@ -510,6 +520,23 @@ export class StepAnimationsListing extends EventTarget {
     // we could switch skeleton types using navigation, so need to re-create in case this happens
     this.animation_search = new AnimationSearch('animation-filter', 'animations-items', theme_manager, this.skeleton_type)
 
+    // wire weapon visibility hooks into the listing UI
+    this.animation_search.weapon_active_provider = () => this.weapon_attachment.has_weapon()
+    this.animation_search.weapon_visibility_provider = (index: number) => this.weapon_attachment.is_visible_in_animation(index)
+    this.animation_search.duplicate_callback = (index: number) => {
+      this.duplicate_animation(index)
+    }
+    this.animation_search.weapon_toggle_callback = (index: number) => {
+      this.weapon_attachment.toggle_animation_visibility(index)
+      this.weapon_attachment.update_preview_visibility(this.current_playing_index)
+    }
+
+    // re-render listing when a weapon is added/removed so the toggles appear
+    this.weapon_attachment.addEventListener('weapon-changed', () => {
+      const filter_event = new Event('input')
+      document.querySelector('#animation-filter')?.dispatchEvent(filter_event)
+    })
+
     // Use the animation search class to handle the UI
     this.animation_search.initialize_animations(animation_clips_to_load)
   }
@@ -517,6 +544,51 @@ export class StepAnimationsListing extends EventTarget {
   public get_animated_selected_elements (): NodeListOf<Element> {
     // this needs to be called ad-hoc as selections might change
     return document.querySelectorAll('#animations-items input[type="checkbox"]')
+  }
+
+  /**
+   * Export names (custom rename applied if any) for the given animation indices.
+   * Order matches the indices passed in.
+   */
+  public get_export_names_for_indices (indices: number[]): string[] {
+    if (this.animation_search === null) {
+      return indices.map((index) => this.animation_clips_loaded[index]?.display_animation_clip.name ?? '')
+    }
+    return indices.map((index) => this.animation_search?.get_export_name(index) ?? '')
+  }
+
+  /**
+   * Clone an animation as a new entry so variants can be exported with
+   * different names and different weapon visibility (e.g. Slash_Sword,
+   * Slash_Greatsword from the same source animation).
+   */
+  private duplicate_animation (index: number): void {
+    const source = this.animation_clips_loaded[index]
+    if (source === undefined) {
+      return
+    }
+
+    const cloned_original = AnimationUtility.deep_clone_animation_clip(source.original_animation_clip)
+    const cloned_display = AnimationUtility.deep_clone_animation_clip(source.display_animation_clip)
+    cloned_original.name = `${source.original_animation_clip.name}_copy`
+    cloned_display.name = `${source.display_animation_clip.name}_copy`
+
+    const new_pair: TransformedAnimationClipPair = {
+      original_animation_clip: cloned_original,
+      display_animation_clip: cloned_display,
+      metadata: { source_type: 'custom-import', tags: ['duplicate'] }
+    }
+
+    this.animation_clips_loaded.push(new_pair)
+    this.animation_search?.add_animations([new_pair])
+  }
+
+  /**
+   * Weapon export info (scale-track injection data) for the given indices.
+   * One entry per attached weapon.
+   */
+  public get_weapon_export_info (indices: number[]): WeaponExportEntry[] | null {
+    return this.weapon_attachment.get_export_info(indices)
   }
 
   public get_animation_indices_to_export (): number[] {
