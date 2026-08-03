@@ -1,6 +1,6 @@
 import { UI } from '../../UI.ts'
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js'
-import { type AnimationClip, Scene, type SkinnedMesh, type Object3D } from 'three'
+import { type AnimationClip, Scene, type SkinnedMesh, type Object3D, VectorKeyframeTrack } from 'three'
 import { type DownloadSettings, ExportContents } from './DownloadSettings.ts'
 import { ExportBoneNamingService } from './ExportBoneNamingService.ts'
 
@@ -9,13 +9,40 @@ export class StepExportToFile extends EventTarget {
   private readonly ui: UI = UI.getInstance()
   private animation_clips_to_export: AnimationClip[] = []
 
-  public set_animation_clips_to_export (all_animations_clips: AnimationClip[], animation_checkboxes: number[]): void {
+  /**
+   * @param export_names Optional custom names, parallel to animation_checkboxes.
+   * When provided, clips are renamed and sorted by name so the exported file
+   * order matches (useful for engines that order animations by file position).
+   */
+  public set_animation_clips_to_export (all_animations_clips: AnimationClip[], animation_checkboxes: number[], export_names?: string[], weapon_export?: Array<{ node_name: string, base_scale: number, visible: boolean[] }> | null): void {
     this.animation_clips_to_export = []
-    animation_checkboxes.forEach((indx) => {
+    animation_checkboxes.forEach((indx, position) => {
       const original_clip: AnimationClip = all_animations_clips[indx]
       const cloned_clip: AnimationClip = original_clip.clone()
+
+      const custom_name = export_names?.[position]
+      if (custom_name !== undefined && custom_name !== '') {
+        cloned_clip.name = custom_name
+      }
+
+      // Weapon visibility: inject a constant scale track per attached weapon —
+      // full-size in animations where it is shown and zero-scale where hidden.
+      if (weapon_export !== undefined && weapon_export !== null) {
+        weapon_export.forEach((weapon_entry) => {
+          const is_visible = weapon_entry.visible[position] ?? true
+          const scale_value = is_visible ? weapon_entry.base_scale : 0.0001
+          const times = [0, Math.max(cloned_clip.duration, 0.001)]
+          const values = [scale_value, scale_value, scale_value, scale_value, scale_value, scale_value]
+          cloned_clip.tracks.push(new VectorKeyframeTrack(`${weapon_entry.node_name}.scale`, times, values))
+        })
+      }
+
       this.animation_clips_to_export.push(cloned_clip)
     })
+
+    // sort by final name so exported animation order is predictable
+    // (e.g. 01_Idle, 02_Walk numbering controls order in the output file)
+    this.animation_clips_to_export.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
   }
 
   public export (
