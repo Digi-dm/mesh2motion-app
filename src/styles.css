@@ -862,3 +862,26 @@ input[type="file"] {
 .download-success-desktop {
     display: none;
 }
+
+/* Weapon attachment panel (fork feature): keep the sidebar from growing
+   past the animation grid width when the panel is expanded */
+#weapon-panel {
+    width: 24rem;
+    max-width: 24rem;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+#weapon-panel > div {
+    max-height: 38vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#weapon-panel select {
+    max-width: 100%;
+}
+
+#weapon-panel input[type="number"] {
+    min-width: 0;
+}

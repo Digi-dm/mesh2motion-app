@@ -148,6 +148,48 @@
        
        
 
+
+                    <!-- Weapon attachment panel (fork feature) -->
+                    <details id="weapon-panel" style="margin: 0.6rem 0;">
+                        <summary style="cursor: pointer;">&#9876; Weapon Attachment</summary>
+                        <div style="display: flex; flex-direction: column; gap: 0.45rem; padding: 0.5rem 0;">
+                            <select id="weapon-select" aria-label="Add weapon">
+                                <option value="">+ Add weapon&hellip;</option>
+                            </select>
+                            <div id="weapon-attachment-list" style="display: flex; flex-direction: column; gap: 2px;">
+                                <div style="opacity: 0.6; font-size: 0.85em;">No weapons attached</div>
+                            </div>
+                            <label style="display: flex; gap: 0.4rem; align-items: center;">Bone
+                                <select id="weapon-bone-select" aria-label="Attachment bone" style="flex: 1;"></select>
+                            </label>
+                            <div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">
+                                <span>Pos</span>
+                                <input id="weapon-pos-x" type="number" step="0.01" value="0" style="width: 4.2em;" aria-label="Position X">
+                                <input id="weapon-pos-y" type="number" step="0.01" value="0" style="width: 4.2em;" aria-label="Position Y">
+                                <input id="weapon-pos-z" type="number" step="0.01" value="0" style="width: 4.2em;" aria-label="Position Z">
+                            </div>
+                            <div style="display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap;">
+                                <span>Rot&deg;</span>
+                                <input id="weapon-rot-x" type="number" step="5" value="0" style="width: 4.2em;" aria-label="Rotation X">
+                                <input id="weapon-rot-y" type="number" step="5" value="0" style="width: 4.2em;" aria-label="Rotation Y">
+                                <input id="weapon-rot-z" type="number" step="5" value="0" style="width: 4.2em;" aria-label="Rotation Z">
+                            </div>
+                            <div style="display: flex; gap: 0.3rem; align-items: center;">
+                                <span>Scale</span>
+                                <input id="weapon-scale-input" type="number" step="0.1" value="1" style="width: 4.2em;" aria-label="Scale">
+                            </div>
+                            <div style="display: flex; gap: 0.3rem; align-items: center;">
+                                <span>Gizmo</span>
+                                <button type="button" id="weapon-gizmo-move" class="secondary-button" style="padding: 2px 8px;">Move</button>
+                                <button type="button" id="weapon-gizmo-rotate" class="secondary-button" style="padding: 2px 8px;">Rotate</button>
+                                <button type="button" id="weapon-gizmo-off" class="secondary-button" style="padding: 2px 8px;">Off</button>
+                            </div>
+                            <div style="font-size: 0.8em; opacity: 0.75;">
+                                Click a weapon above to edit it. Card icons: &#9876; toggles the active weapon, &#10697; duplicates an animation.
+                            </div>
+                        </div>
+                    </details>
+
                     <div class="download-actions-row">
                         
                         <!-- testing the mirroring options. Hide this for now until we get a better implementation for per animations -->
