@@ -36,6 +36,13 @@
       "license": "CC0 (user library: 3D Animations Module)"
     },
     {
+      "id": "Book_1",
+      "name": "Book 1",
+      "file": "weapons/Book_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Bow_Golden",
       "name": "Bow Golden",
       "file": "weapons/Bow_Golden.glb",
@@ -50,6 +57,20 @@
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
+      "id": "Cape_Purple",
+      "name": "Cape Purple",
+      "file": "weapons/Cape_Purple.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Crossbow_1",
+      "name": "Crossbow 1",
+      "file": "weapons/Crossbow_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Dagger",
       "name": "Dagger",
       "file": "weapons/Dagger.glb",
@@ -57,10 +78,31 @@
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
+      "id": "Dagger_2",
+      "name": "Dagger 2",
+      "file": "weapons/Dagger_2.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Dagger_Crooked_1",
+      "name": "Dagger Crooked 1",
+      "file": "weapons/Dagger_Crooked_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Dagger_Golden",
       "name": "Dagger Golden",
       "file": "weapons/Dagger_Golden.glb",
       "thumbnail": "weapons/Dagger_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Dagger_Sheathed_1",
+      "name": "Dagger Sheathed 1",
+      "file": "weapons/Dagger_Sheathed_1.glb",
+      "thumbnail": "",
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
@@ -92,6 +134,13 @@
       "license": "CC0 (user library: 3D Animations Module)"
     },
     {
+      "id": "Greatsword_2",
+      "name": "Greatsword 2",
+      "file": "weapons/Greatsword_2.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Hammer_Double",
       "name": "Hammer Double",
       "file": "weapons/Hammer_Double.glb",
@@ -106,11 +155,74 @@
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
+      "id": "Hat_Cowboy_1",
+      "name": "Hat Cowboy 1",
+      "file": "weapons/Hat_Cowboy_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Hat_Wizard",
+      "name": "Hat Wizard",
+      "file": "weapons/Hat_Wizard.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Helmet_1",
+      "name": "Helmet 1",
+      "file": "weapons/Helmet_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Helmet_Viking_1",
+      "name": "Helmet Viking 1",
+      "file": "weapons/Helmet_Viking_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Mace_1",
+      "name": "Mace 1",
+      "file": "weapons/Mace_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Maul_1",
+      "name": "Maul 1",
+      "file": "weapons/Maul_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Morningstar_Mace",
+      "name": "Morningstar Mace",
+      "file": "weapons/Morningstar_Mace.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Mug_1",
+      "name": "Mug 1",
+      "file": "weapons/Mug_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Quarterstaff",
       "name": "Quarterstaff",
       "file": "weapons/Quarterstaff.glb",
       "thumbnail": "",
       "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Quiver_Arrows",
+      "name": "Quiver Arrows",
+      "file": "weapons/Quiver_Arrows.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
       "id": "Scimitar2",
@@ -120,11 +232,60 @@
       "license": "CC0 (user library: 3D Animations Module)"
     },
     {
+      "id": "Shield_Metal_1",
+      "name": "Shield Metal 1",
+      "file": "weapons/Shield_Metal_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Shield_Metal_2",
+      "name": "Shield Metal 2",
+      "file": "weapons/Shield_Metal_2.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Shield_Metal_3",
+      "name": "Shield Metal 3",
+      "file": "weapons/Shield_Metal_3.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Shield_Metal_4",
+      "name": "Shield Metal 4",
+      "file": "weapons/Shield_Metal_4.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Shield_Metal_5",
+      "name": "Shield Metal 5",
+      "file": "weapons/Shield_Metal_5.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Shield_Metal_Tree",
+      "name": "Shield Metal Tree",
+      "file": "weapons/Shield_Metal_Tree.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Shield_Spell",
       "name": "Shield Spell",
       "file": "weapons/Shield_Spell_SR.glb",
       "thumbnail": "",
       "license": "CC0 (user library: 3D Animations Module)"
+    },
+    {
+      "id": "Shortsword_Sheathed",
+      "name": "Shortsword Sheathed",
+      "file": "weapons/Shortsword_Sheathed.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
       "id": "Spear",
@@ -134,10 +295,38 @@
       "license": "CC0 (user library: 3D Animations Module)"
     },
     {
+      "id": "Spear_double-tipped",
+      "name": "Spear double-tipped",
+      "file": "weapons/Spear_double-tipped.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Staff_1",
+      "name": "Staff 1",
+      "file": "weapons/Staff_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Sword",
       "name": "Sword",
       "file": "weapons/Sword.glb",
       "thumbnail": "weapons/Sword.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Sword_2",
+      "name": "Sword 2",
+      "file": "weapons/Sword_2.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Sword_3",
+      "name": "Sword 3",
+      "file": "weapons/Sword_3.glb",
+      "thumbnail": "",
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
@@ -155,10 +344,24 @@
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     },
     {
+      "id": "Sword_Flame_1",
+      "name": "Sword Flame 1",
+      "file": "weapons/Sword_Flame_1.glb",
+      "thumbnail": "",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
       "id": "Sword_Golden",
       "name": "Sword Golden",
       "file": "weapons/Sword_Golden.glb",
       "thumbnail": "weapons/Sword_Golden.webp",
+      "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
+    },
+    {
+      "id": "Water_Pouch_1",
+      "name": "Water Pouch 1",
+      "file": "weapons/Water_Pouch_1.glb",
+      "thumbnail": "",
       "license": "CC0 (3D Canvas compendium / Quaternius-style RPG items)"
     }
   ]
