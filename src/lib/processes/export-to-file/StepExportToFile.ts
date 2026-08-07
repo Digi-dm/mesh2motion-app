@@ -42,12 +42,7 @@ export class StepExportToFile extends EventTarget {
 
     // sort by final name so exported animation order is predictable
     // (e.g. 01_Idle, 02_Walk numbering controls order in the output file)
-    // Order prefixes from 10 up carry a leading underscore ("_10. Attack") so they
-    // sort correctly as plain strings elsewhere; ignore it here or localeCompare
-    // would treat it as punctuation and float those names to the front.
-    const order_key = (name: string): string => name.replace(/^_/, '')
-    this.animation_clips_to_export.sort((a, b) =>
-      order_key(a.name).localeCompare(order_key(b.name), undefined, { numeric: true }))
+    this.animation_clips_to_export.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
   }
 
   public export (
