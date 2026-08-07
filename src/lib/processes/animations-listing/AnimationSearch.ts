@@ -168,7 +168,7 @@ export class AnimationSearch extends EventTarget {
   }
 
   private strip_order_prefix (name: string): string {
-    return name.replace(/^\d+\.\s*/, '')
+    return name.replace(/^_?\d+\.\s*/, '')
   }
 
   private update_selection_order (index: number, checked: boolean): void {
@@ -180,6 +180,18 @@ export class AnimationSearch extends EventTarget {
       this.selection_order.splice(existing_position, 1)
     }
     this.apply_order_prefixes()
+  }
+
+  /**
+   * Build the leading order prefix for a position.
+   *
+   * Positions from 10 up get an extra leading underscore ("_10. ") so the names
+   * still land in numeric order when something sorts them as plain strings —
+   * "10." would otherwise fall between "1." and "2.", but "_10." sorts after
+   * "9." because '_' is above the digits in code-unit order.
+   */
+  private order_prefix (position: number): string {
+    return position < 10 ? `${position}. ` : `_${position}. `
   }
 
   /**
@@ -204,7 +216,7 @@ export class AnimationSearch extends EventTarget {
     this.selection_order.forEach((animation_index, position) => {
       const base = this.custom_export_names.get(animation_index) ??
         this.animation_name_clean(this.all_animations[animation_index]?.name ?? '')
-      this.custom_export_names.set(animation_index, `${position}. ${base}`)
+      this.custom_export_names.set(animation_index, `${this.order_prefix(position)}${base}`)
     })
 
     const filter_text = this.filter_input?.value.toLowerCase() ?? ''
